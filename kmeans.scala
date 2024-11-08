@@ -41,6 +41,8 @@ object KMeansClustering {
     var hasConverged = false
     val epsilon = 0.001
 
+    val writer = new PrintWriter(new File("centroids_output.txt"))
+
     for (iteration <- 1 to maxIterations if !hasConverged) {
       val clusters = data.groupBy(closestPoint(_, centroids))
       prevCentroids = centroids
@@ -52,11 +54,12 @@ object KMeansClustering {
       }
 
       if (hasConverged) {
-        println(s"Converged at iteration $iteration")
+        writer.println(s"Converged at iteration $iteration")
       }
     }
 
-    // Output the results
-    centroids.foreach(centroid => println(s"Centroid: ${centroid.mkString(", ")}"))
+    // Output the results to a file
+    centroids.foreach(centroid => writer.println(s"Centroid: ${centroid.mkString(", ")}"))
+    writer.close()
   }
 }
